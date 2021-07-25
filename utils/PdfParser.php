@@ -2,17 +2,15 @@
 
 namespace Utils;
 
-require_once 'vendor/autoload.php';
-
 class PdfParser {
-	public function parseText($filename)
+	public static function parseText($path2file)
     {
         $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile("storage/".$filename);
+        $pdf = $parser->parseFile($path2file);
 
         $original_text = $pdf->getText();
         $text = nl2br($original_text); // Paragraphs and line break formatting
-        $text = $this->clean_ascii_characters($text); // Check special characters
+        $text = self::clean_ascii_characters($text); // Check special characters
         $text = str_replace(array("<br /> <br /> <br />", "<br> <br> <br>"), "<br /> <br />", $text); // Optional
         $text = addslashes($text); // Backslashes for single quotes     
         $text = stripslashes($text);
@@ -49,6 +47,8 @@ class PdfParser {
         /* End of additional step */
         /**************************/
 
+        $text = preg_replace('/\s+/', ' ', $text);
+
         return $text;
     }
 
@@ -56,5 +56,24 @@ class PdfParser {
         $string = str_replace(array('-', '–'), '-', $string);
         $string = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);  
         return $string;
+    }
+
+    public static function genSentencePerLine($text)
+    {
+        $arr_sntcs = Text::splitIntoSentences($text);
+        $new_sntcs = "";
+
+        foreach ($arr_sntcs as $sentence) {
+            $new_sntcs .= $sentence."\n";
+        }
+
+        return $new_sntcs;
+    }
+
+    public static function saveTXT($parsedText, $path2file)
+    {
+        $file = fopen($path2file, "w") or die("Unable to open file!");
+        fwrite($file, $parsedText);
+        fclose($file);
     }
 }
