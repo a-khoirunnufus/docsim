@@ -3,7 +3,7 @@
 namespace Utils;
 
 class PdfParser {
-	public static function parseText($path2file)
+	public static function parseTextv1($path2file)
     {
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($path2file);
@@ -52,7 +52,68 @@ class PdfParser {
         return $text;
     }
 
-    private function clean_ascii_characters($string) {
+    public static function saveRawText($path2file)
+    {
+        $fd = popen(APP_PATH."/tools/xpdf-tools-linux-4.03/bin64/pdftotext {$path2file}", "r");
+        pclose($fd);
+
+        return explode(".", $path2file)[0].".txt";
+    }
+
+    public static function savePreprocessingText($path2file)
+    {
+        /*
+         * Rule:
+         * - exclude sentences with less than 5 word
+         *
+         */
+
+        $read = File::readTXT($path2file);
+        
+        if(!$read['success'])
+        {
+            return false;
+        }
+
+        $textArr = preg_split('/\n+/', $read['content']);
+        $newTextArr_a = array();
+
+        foreach ($textArr as $value) 
+        {
+            if( count(explode(" ", $value)) >= 5 )
+            {
+                array_push($newTextArr_a, $value);
+            }
+        }
+        
+        $newTextArr_b = array();
+        foreach ($newTextArr_a as $text) 
+        {
+            $tmpArr = Text::splitIntoSentences($text);
+            foreach ($tmpArr as $item) 
+            {
+                if( count(explode(" ", $item)) >= 5 )
+                {
+                    array_push($newTextArr_b, $item);
+                }
+            }
+        }
+        
+        // var_dump($newTextArr_b);
+
+        $newFile2Path = explode(".", $path2file)[0]."-preprocessing.txt";
+        $write = File::writeFromArray($newFile2Path, $newTextArr_b);
+
+        if(!$write)
+        {
+            return false;
+        }
+
+        return $newFile2Path;
+    }
+
+    private function clean_ascii_characters($string) 
+    {
         $string = str_replace(array('-', '–'), '-', $string);
         $string = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);  
         return $string;
