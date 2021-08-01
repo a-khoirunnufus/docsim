@@ -24,12 +24,12 @@ use Utils\Similarity;
  * get similarity report
  *
  */
-// $arrSentences1 = Similarity::getArrSentences('storage/artikel-kompas-1-formatted.txt');
-// $arrSentences2 = Similarity::getArrSentences('storage/artikel-kompas-2-formatted.txt');
+$arrSentences1 = Similarity::getArrSentences('storage/artikel-kompas-1-preprocessing.txt');
+$arrSentences2 = Similarity::getArrSentences('storage/artikel-kompas-2-preprocessing.txt');
 
-// $simReport = Similarity::compareSentences($arrSentences1, $arrSentences2);
+$simReport = Similarity::compareSentences($arrSentences1, $arrSentences2);
 
-// var_dump($simReport);
+var_dump($simReport);
 
 
 /*

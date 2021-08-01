@@ -103,7 +103,7 @@ class File
 			}
 
 			foreach ($arr as $item) {
-				fwrite($fp, $item."\n");
+				fwrite($fp, $item."<SEP>");
 			}
 
 			fclose($fp);

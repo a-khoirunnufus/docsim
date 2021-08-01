@@ -54,9 +54,9 @@ class PdfParser {
 
     public static function saveRawText($path2file)
     {
-        $fd = popen(APP_PATH."/tools/xpdf-tools-linux-4.03/bin64/pdftotext {$path2file}", "r");
+        $fd = popen(APP_PATH."/tools/xpdf-tools-linux-4.03/bin64/pdftotext '{$path2file}'", "r");
         pclose($fd);
-
+        
         return explode(".", $path2file)[0].".txt";
     }
 
@@ -98,7 +98,7 @@ class PdfParser {
                 }
             }
         }
-        
+
         // var_dump($newTextArr_b);
 
         $newFile2Path = explode(".", $path2file)[0]."-preprocessing.txt";
@@ -110,6 +110,55 @@ class PdfParser {
         }
 
         return $newFile2Path;
+    }
+
+    public static function getPreprocessingText($path2file)
+    {
+        $read = File::readTXT($path2file);
+        
+        if(!$read['success'])
+        {
+            return false;
+        }
+
+        $textArr = preg_split('/\n+/', $read['content']);
+        $newTextArr_a = array();
+
+        foreach ($textArr as $value) 
+        {
+            if( count(explode(" ", $value)) >= 5 )
+            {
+                array_push($newTextArr_a, $value);
+            }
+        }
+        
+        $newTextArr_b = array();
+        foreach ($newTextArr_a as $text) 
+        {
+            $tmpArr = Text::splitIntoSentences($text);
+            foreach ($tmpArr as $item) 
+            {
+                if( count(explode(" ", $item)) >= 5 )
+                {
+                    array_push($newTextArr_b, $item);
+                }
+            }
+        }
+
+        // var_dump($newTextArr_b);
+
+        $preprocessing_text = "";
+
+        foreach ($newTextArr_b as $key => $sentence) {
+            if( $key != count($newTextArr_b)-1 )
+            {
+                $preprocessing_text .= $sentence."<SEP>";
+            }else{
+                $preprocessing_text .= $sentence;
+            }
+        }
+
+        return $preprocessing_text;
     }
 
     private function clean_ascii_characters($string) 

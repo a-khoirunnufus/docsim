@@ -9,10 +9,8 @@ use Utils\File;
 // use Utils\Text;
 
 // SAVE LOCAL FILE EXAMPLE
-// $save1 = PdfParser::saveRawText(APP_PATH."/storage/artikel-cnn.pdf");
+// $save1 = PdfParser::saveRawText(APP_PATH."/storage/artikel-kompas-2.pdf");
 // $save2 = PdfParser::savePreprocessingText($save1);
-
-
 
 /*
  * INSERT DOCUMENT TO DATABASE EXAMPLE START
@@ -44,10 +42,10 @@ use Utils\File;
 
 
 // GET DOCUMENT EXAMPLE
-$db = new Database();
-$conn = $db->connect();
-$sql = "SELECT * FROM document";
-$result = $db->queryGetResultArr($sql);
+// $db = new Database();
+// $conn = $db->connect();
+// $sql = "SELECT * FROM document";
+// $result = $db->queryGetResultArr($sql);
 
-var_dump($result);
+// var_dump($result);
 

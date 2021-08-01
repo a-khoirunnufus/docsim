@@ -1,5 +1,7 @@
 {
     "require": {
-        "smalot/pdfparser": "^0.19.0"
+        "smalot/pdfparser": "^0.19.0",
+        "ramsey/uuid": "^3.9",
+        "guzzlehttp/guzzle": "^6.5"
     }
 }

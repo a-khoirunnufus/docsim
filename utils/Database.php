@@ -23,7 +23,7 @@ class Database {
 		}
 
 		$this->conn = $conn;
-		echo "<script>console.log('Connection successfully')</script>";
+		// echo "<script>console.log('Connection successfully')</script>";
 		return $conn;
 	}
 
