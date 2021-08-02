@@ -1,5 +1,7 @@
 <?php
 
+// EXAMPLE FILE FOR UPLOAD DOCUMENT
+
 include 'vendor/autoload.php';
 include 'utils/__init.php';
 include 'config.php';
