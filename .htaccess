@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ ./app/pages/$1 [L,QSA]
+</IfModule>
+
+php_flag log_errors on
+php_value error_reporting 32767
+php_value error_log "/home/u835676996/public_html/docsim/error_log.txt"

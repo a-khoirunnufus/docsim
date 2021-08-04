@@ -1,3 +1,4 @@
 vendor/
 storage/
-sftp-config.json
+.vscode/
+tools/
